@@ -123,7 +123,24 @@ impl Hash for PublicKey {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use int_to_bytes::int_to_bytes48;
     use ssz::ssz_encode;
+
+    #[test]
+    pub fn key_of_830() {
+        let sk = SecretKey::from_bytes(&int_to_bytes48(830)).unwrap();
+        let original = PublicKey::from_secret_key(&sk);
+
+        let bytes = ssz_encode(&original);
+        let (decoded, _) = PublicKey::ssz_decode(&bytes, 0).unwrap();
+
+        assert_eq!(original, decoded);
+        assert_eq!(ssz_encode(&original), ssz_encode(&decoded));
+        assert_eq!(
+            original.as_uncompressed_bytes(),
+            decoded.as_uncompressed_bytes()
+        );
+    }
 
     #[test]
     pub fn test_ssz_round_trip() {
