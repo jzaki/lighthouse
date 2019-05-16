@@ -50,6 +50,23 @@ fn concat(mut vec1: Vec<u8>, mut vec2: Vec<u8>) -> Vec<u8> {
 mod tests {
     use super::*;
 
+    #[test]
+    fn verify_arbitrary_length() {
+        let leaf = H256::random();
+        let depth = 32;
+        // The index is roughly in the middle of the leaf nodes
+        let index = 2_usize.pow(32) / 2 / 2;
+
+        let branch: Vec<H256> = (0..depth)
+            .into_iter()
+            .map(|i| H256::from(i as u64))
+            .collect();
+
+        let root = merkle_root_from_branch(leaf, &branch, depth, index);
+
+        assert!(verify_merkle_proof(leaf, &branch, depth, index, root));
+    }
+
     fn hash_concat(h1: H256, h2: H256) -> H256 {
         H256::from_slice(&hash(&concat(
             h1.as_bytes().to_vec(),
