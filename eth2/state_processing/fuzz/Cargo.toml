@@ -11,6 +11,7 @@ cargo-fuzz = true
 [dependencies]
 ssz = { path = "../../utils/ssz" }
 types = { path = "../../types" }
+hex = "0.3"
 
 [dependencies.state_processing]
 path = ".."
@@ -24,3 +25,7 @@ members = ["."]
 [[bin]]
 name = "fuzz_target_1"
 path = "fuzz_targets/fuzz_target_1.rs"
+
+[[bin]]
+name = "fuzz_target_slot"
+path = "fuzz_targets/fuzz_target_slot.rs"

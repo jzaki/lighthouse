@@ -9,7 +9,7 @@ use types::*;
 use state_processing::{per_block_processing, block_processing_builder::BlockProcessingBuilder};
 
 
-// Fuzz per_block_processing
+// Fuzz per_block_processing, with input data as an ssz encoded block
 fuzz_target!(|data: &[u8]| {
     // Generate a chain_spec
     let spec = FoundationEthSpec::spec();

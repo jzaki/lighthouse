@@ -11,6 +11,7 @@ use tree_hash::{SignedRoot, TreeHash};
 /// Builds a beacon block to be used for testing purposes.
 ///
 /// This struct should **never be used for production purposes.**
+#[derive(Clone)]
 pub struct TestingBeaconBlockBuilder {
     pub block: BeaconBlock,
 }

@@ -20,6 +20,7 @@ bls = { path = "../utils/bls" }
 fnv = "1.0"
 hashing = { path = "../utils/hashing" }
 int_to_bytes = { path = "../utils/int_to_bytes" }
+lazy_static = "1.3"
 integer-sqrt = "0.1"
 log = "0.4"
 merkle_proof = { path = "../utils/merkle_proof" }

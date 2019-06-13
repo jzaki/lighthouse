@@ -2,6 +2,7 @@ use tree_hash::SignedRoot;
 use types::test_utils::{TestingBeaconBlockBuilder, TestingBeaconStateBuilder};
 use types::*;
 
+#[derive(Clone)]
 pub struct BlockProcessingBuilder<T: EthSpec> {
     pub state_builder: TestingBeaconStateBuilder<T>,
     pub block_builder: TestingBeaconBlockBuilder,

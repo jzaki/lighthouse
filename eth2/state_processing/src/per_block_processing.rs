@@ -3,6 +3,7 @@ use errors::{BlockInvalid as Invalid, BlockProcessingError as Error, IntoWithInd
 use rayon::prelude::*;
 use tree_hash::{SignedRoot, TreeHash};
 use types::*;
+use super::lazy_static;
 
 pub use self::verify_attester_slashing::{
     gather_attester_slashing_indices, gather_attester_slashing_indices_modular,
@@ -20,6 +21,8 @@ pub use verify_transfer::{
     execute_transfer, verify_transfer, verify_transfer_time_independent_only,
 };
 
+use block_processing_builder::BlockProcessingBuilder;
+
 pub mod block_processing_builder;
 pub mod errors;
 pub mod tests;
@@ -35,6 +38,27 @@ mod verify_transfer;
 //
 // Presently disabled to make testing easier.
 const VERIFY_DEPOSIT_MERKLE_PROOFS: bool = false;
+
+/*******************************************************************************************/
+// For Fuzzing purposes only
+lazy_static! {
+    pub static ref SPEC: ChainSpec = FoundationEthSpec::spec();
+    pub static ref BUILDER: BlockProcessingBuilder<FoundationEthSpec> = get_builder(&*SPEC);
+}
+
+// Taken from eth2/state_processing/src/per_block_processing/tests.rs
+fn get_builder(spec: &ChainSpec) -> (BlockProcessingBuilder<FoundationEthSpec>) {
+    let num_validators = 2;
+    let mut builder = BlockProcessingBuilder::new(num_validators, &spec);
+
+    // Set the state and block to be in the last slot of the 4th epoch.
+    let last_slot_of_epoch = (spec.genesis_epoch + 4).end_slot(spec.slots_per_epoch);
+    builder.set_slot(last_slot_of_epoch, &spec);
+    builder.build_caches(&spec);
+    (builder)
+}
+/*******************************************************************************************/
+
 
 /// Updates the state for a new block, whilst validating that the block is valid.
 ///
