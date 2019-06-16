@@ -240,6 +240,7 @@ impl ChainSpec {
             chain_id: 2, // lighthouse testnet chain id
             genesis_slot,
             shuffle_round_count: 10,
+            min_attestation_inclusion_delay: 2,
             ..ChainSpec::mainnet()
         }
     }
